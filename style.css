@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+#booksContainer {
+  list-style: none;
+  padding-inline-start: 0;
+  padding: 0 15px;
+}
+
+.book-title {
+  margin: 2px 0;
+}
+
+.add-book-form {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.bk-title-input,
+.bk-author-input {
+  width: 250px;
+  margin-bottom: 10px;
+}
+
+.add-book-btn {
+  width: 60px;
+}
