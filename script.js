@@ -32,8 +32,8 @@ function addNewBook() {
 
 /// /////// Function to allow users to delete books from the list
 
-function removeBooks(element) {
-  element.parentNode.remove();
+function removeBooks(btn) {
+  btn.parentNode.remove();
 }
 
 /// ///// Function to render book list on interface
@@ -62,12 +62,12 @@ addButton.addEventListener('click', () => {
 
 booksContainer.addEventListener('click', (event) => {
   const button = event.target;
-  const buttonId = event.target.id;
+  const buttonId = button.id;
   if (buttonId !== '') {
     booksArray = booksArray.filter((book) => book.id !== Number(buttonId));
+    removeBooks(button);
+    updateBookStorage();
   }
-  removeBooks(button);
-  updateBookStorage();
 });
 
 renderBooks();
