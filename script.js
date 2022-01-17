@@ -2,59 +2,79 @@ const titleInput = document.querySelector('.bk-title-input');
 const authorInput = document.querySelector('.bk-author-input');
 const booksContainer = document.querySelector('#booksContainer');
 const addButton = document.querySelector('.add-book-btn');
-const removeButton = document.querySelector('.bk-remove-btn');
+const removeBtn = document.querySelector('.bk-remove-btn')
+const removeButton = document.getElementById('${book.id}');
 
-let booksArray = [];
-let bookStorage = localStorage.setItem('bookStore', JSON.stringify(booksArray));
+let booksArray = localStorage.getItem("bookStorage") ? JSON.parse(localStorage.getItem("bookStorage")) : [];
+
+///////// Function to update list of books stored in Local Storage
 
 function updateBookStorage() {
-  bookStorage;
-  return bookStorage;
+  return localStorage.setItem('bookStorage', JSON.stringify(booksArray));
 }
+
+////////// Function to allow users add new books to the list
 
 function addNewBook(){
   const titleTrim = titleInput.value.trim();
   const authorTrim = authorInput.value.trim();
   if (titleTrim !== '' && authorTrim !== '') {
+    const date = new Date();
     booksArray.push(
       {
-        title: titleInput.value,
-        author: authorInput.value
+        title: titleTrim,
+        author: authorTrim,
+        id: date.getTime()
       }
     )
   }
   titleInput.value = '';
   authorInput.value = '';
-  
+};
+
+////////// Function to allow users to delete books from the list
+
+function removeBooks(element) {
+  element.parentNode.remove();
+}
+
+//////// Function to render book list on interface
+
+function renderBooks() {
   let bookHTML = ``;
   booksArray.forEach( book => {
     bookHTML =
       bookHTML +
     `
     <li class="singlebook">
-    <p class="book-title">${book.title}</p>
-    <p class="book-title">${book.author}</p>
-    <button class="bk-remove-btn" type="button">REMOVE</button>
-    <hr>
+      <p class="book-title">${book.title}</p>
+      <p class="book-title">${book.author}</p>
+      <button id="${book.id}" class="bk-remove-btn" type="button">REMOVE</button>
+      <hr>
     </li>
     `
   });
   booksContainer.innerHTML = bookHTML;
-};
+}
 
 addButton.addEventListener('click', () => {
   addNewBook();
   updateBookStorage();
+  renderBooks();
 });
 
+booksContainer.addEventListener('click', (event) => {
+  let button = event.target;
+  let buttonId = event.target.id;
+  if (buttonId !== '') {
+    booksArray = booksArray.filter((book) => {
+      if (book.id != buttonId) {
+        return book;
+      }
+    })
+  }
+  removeBooks(button);
+  updateBookStorage();
+})
 
-
-// function removeBook() {
-//   if (booksArray != []) {
-//     console.log('Books Array is not empty')
-//   }
-// }
-  
-  // removeButton.addEventListener('click', () => {
-  //   removeBook();
-  // })
+renderBooks()
