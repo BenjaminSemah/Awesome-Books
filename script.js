@@ -2,20 +2,18 @@ const titleInput = document.querySelector('.bk-title-input');
 const authorInput = document.querySelector('.bk-author-input');
 const booksContainer = document.querySelector('#booksContainer');
 const addButton = document.querySelector('.add-book-btn');
-const removeBtn = document.querySelector('.bk-remove-btn')
-const removeButton = document.getElementById('${book.id}');
 
-let booksArray = localStorage.getItem("bookStorage") ? JSON.parse(localStorage.getItem("bookStorage")) : [];
+let booksArray = localStorage.getItem('bookStorage') ? JSON.parse(localStorage.getItem('bookStorage')) : [];
 
-///////// Function to update list of books stored in Local Storage
+/// ////// Function to update list of books stored in Local Storage
 
 function updateBookStorage() {
   return localStorage.setItem('bookStorage', JSON.stringify(booksArray));
 }
 
-////////// Function to allow users add new books to the list
+/// /////// Function to allow users add new books to the list
 
-function addNewBook(){
+function addNewBook() {
   const titleTrim = titleInput.value.trim();
   const authorTrim = authorInput.value.trim();
   if (titleTrim !== '' && authorTrim !== '') {
@@ -24,35 +22,34 @@ function addNewBook(){
       {
         title: titleTrim,
         author: authorTrim,
-        id: date.getTime()
-      }
-    )
+        id: date.getTime(),
+      },
+    );
   }
   titleInput.value = '';
   authorInput.value = '';
-};
+}
 
-////////// Function to allow users to delete books from the list
+/// /////// Function to allow users to delete books from the list
 
 function removeBooks(element) {
   element.parentNode.remove();
 }
 
-//////// Function to render book list on interface
+/// ///// Function to render book list on interface
 
 function renderBooks() {
-  let bookHTML = ``;
-  booksArray.forEach( book => {
-    bookHTML =
-      bookHTML +
-    `
+  let bookHTML = '';
+  booksArray.forEach((book) => {
+    bookHTML
+    += `
     <li class="singlebook">
       <p class="book-title">${book.title}</p>
       <p class="book-title">${book.author}</p>
       <button id="${book.id}" class="bk-remove-btn" type="button">REMOVE</button>
       <hr>
     </li>
-    `
+    `;
   });
   booksContainer.innerHTML = bookHTML;
 }
@@ -64,17 +61,13 @@ addButton.addEventListener('click', () => {
 });
 
 booksContainer.addEventListener('click', (event) => {
-  let button = event.target;
-  let buttonId = event.target.id;
+  const button = event.target;
+  const buttonId = event.target.id;
   if (buttonId !== '') {
-    booksArray = booksArray.filter((book) => {
-      if (book.id != buttonId) {
-        return book;
-      }
-    })
+    booksArray = booksArray.filter((book) => book.id !== Number(buttonId));
   }
   removeBooks(button);
   updateBookStorage();
-})
+});
 
-renderBooks()
+renderBooks();
